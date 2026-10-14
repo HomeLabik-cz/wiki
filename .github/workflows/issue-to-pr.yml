@@ -125,8 +125,6 @@ jobs:
             ];
             if (website) lines.push(`website: ${q(website)}`);
             if (docker) lines.push(`docker: ${q(docker)}`);
-            const icon = getField('Ikona') || getField('Icon') || 'cube';
-            lines.push(`icon: ${q(icon)}`);
             lines.push(`added: ${q(addedTime)}`);
             lines.push(`description: ${q(description)}`);
 
