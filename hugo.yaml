@@ -1,0 +1,29 @@
+baseURL: "https://wiki.homelabik.cz/"
+timeZone: "Europe/Prague"
+locale: "cs-cz"
+defaultContentLanguage: "cs"
+title: "HomeLabik Wiki"
+enableRobotsTXT: true
+
+relativeURLs: false
+canonifyURLs: false
+
+params:
+  siteName: "HomeLabik Wiki"
+  description: "Naše komunitní wiki pro self-hosting a chytrou domácnost."
+  author: "HomeLabik.cz"
+  githubRepo: "https://github.com/HomeLabik-cz/wiki"
+  issueNewAppUrl: "https://github.com/HomeLabik-cz/wiki/issues/new?template=add_app.yml"
+  communityUrl: "https://homelabik.cz"
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    style: "nord"
+    lineNos: false
+
+caches:
+  images:
+    dir: :cacheDir/images

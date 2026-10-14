@@ -1,0 +1,8 @@
+name: "Immich"
+category: "Media"
+website: "https://immich.app"
+source: "https://github.com/immich-app/immich"
+docker: "https://github.com/immich-app/immich/pkgs/container/immich-server"
+icon: "immich"
+added: "2026-10-08T18:25:00Z"
+description: "Moderní alternativa k Google Photos a Apple Photos pro organizaci a zálohování fotek a videí."

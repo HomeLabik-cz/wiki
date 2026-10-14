@@ -1,0 +1,8 @@
+name: "Syncthing"
+category: "Sync"
+website: "https://syncthing.net"
+source: "https://github.com/syncthing/syncthing"
+docker: "https://hub.docker.com/r/syncthing/syncthing"
+icon: "syncthing"
+added: "2026-10-13T16:20:00Z"
+description: "Nástroj pro bezpečný šifrovaný přenos a obousměrnou synchronizaci souborů v reálném čase."

@@ -1,0 +1,49 @@
+name: Validate Apps and Hugo Build
+
+on:
+  pull_request:
+    paths:
+      - 'data/apps/**'
+      - 'scripts/**'
+      - 'layouts/**'
+      - 'static/**'
+      - 'content/**'
+      - 'hugo.yaml'
+      - '.github/workflows/validate-apps.yml'
+  push:
+    branches: [main, master]
+    paths:
+      - 'data/apps/**'
+      - 'scripts/**'
+      - 'layouts/**'
+      - 'static/**'
+      - 'content/**'
+      - 'hugo.yaml'
+
+jobs:
+  validate:
+    name: Validate YAML Data & Test Hugo Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies and validate apps
+        run: |
+          pip install pyyaml
+          python3 scripts/validate_apps.py
+
+      - name: Set up Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: 'latest'
+          extended: true
+
+      - name: Test site build (Hugo)
+        run: hugo --minify --environment preview

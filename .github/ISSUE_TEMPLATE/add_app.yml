@@ -1,0 +1,55 @@
+name: "Návrh aplikace do seznamu"
+description: "Přidej novou self-hosted aplikaci do seznamu na wiki"
+labels: ["app"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        <!-- type: app-proposal -->
+        Do titulku napiš pouze název aplikace, např. Immich.
+  - type: input
+    id: category
+    attributes:
+      label: "Kategorie"
+      description: "Zadej kategorii (např. Media, Networking, Dashboard, AI atd.)."
+      placeholder: "např. Media"
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: "GitHub"
+      placeholder: "https://github.com/immich-app/immich"
+    validations:
+      required: true
+  - type: input
+    id: docker
+    attributes:
+      label: "Docker Hub (Volitelné)"
+      placeholder: "https://hub.docker.com/r/altran1502/immich-server"
+    validations:
+      required: false
+  - type: input
+    id: website
+    attributes:
+      label: "Webové stránky / docs projektu (Volitelné)"
+      placeholder: "https://immich.app/"
+    validations:
+      required: false
+  - type: textarea
+    id: description
+    attributes:
+      label: "Krátký popis"
+      description: "1-2 věty v češtině, k čemu aplikace slouží."
+      placeholder: "Moderní alternativa k Google Photos a Apple Photos pro organizaci a zálohování fotek nebo videí."
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Potvrzení"
+      options:
+        - label: "Aplikace je Open-Source a self-hostovatelná."
+          required: true
+        - label: "Projekt je v aktivním vývoji."
+          required: true

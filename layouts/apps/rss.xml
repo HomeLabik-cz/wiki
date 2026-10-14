@@ -1,0 +1,50 @@
+{{- $pctx := . -}}
+{{- if .IsHome -}}{{ $pctx = .Site }}{{- end -}}
+{{- $apps := hugo.Data.apps -}}
+{{- $appList := slice -}}
+{{- range $slug, $item := $apps -}}
+  {{- $appList = $appList | append (merge $item (dict "slug" $slug)) -}}
+{{- end -}}
+{{- $sortedApps := sort $appList "added" "desc" -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ with .Title }}{{ . }} | {{ end }}{{ .Site.Title }}</title>
+    <link>{{ .Permalink }}</link>
+    <description>{{ with .Description }}{{ . }}{{ else }}Přehled self-hosted aplikací z HomeLabik Wiki{{ end }}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>{{ site.Language.Locale | default "cs-cz" }}</language>
+    <atom:link href="{{ "apps/index.xml" | absURL }}" rel="self" type="application/rss+xml" />
+    {{ range $sortedApps }}
+      {{- $pubDate := now -}}
+      {{- with .added -}}
+        {{- $pubDate = time . -}}
+      {{- end -}}
+      {{- $appLink := .website | default .source | default (printf "%s#%s" $pctx.Permalink .slug) -}}
+      {{- $iconName := or .icon .slug -}}
+      {{- $htmlContent := "" -}}
+      {{- if and $iconName (ne $iconName "cube") (ne $iconName "none") -}}
+        {{- $htmlContent = printf "<p><img src=\"https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/%s.svg\" width=\"48\" height=\"48\" alt=\"%s\" style=\"vertical-align:middle;\" /></p>" $iconName (.name | htmlEscape) -}}
+      {{- end -}}
+      {{- $htmlContent = printf "%s<p>%s</p><p><strong>Kategorie:</strong> %s</p>" $htmlContent (.description | htmlEscape) (.category | htmlEscape) -}}
+      {{- with .website -}}
+        {{- $htmlContent = printf "%s<p><strong>Web:</strong> <a href=\"%s\">%s</a></p>" $htmlContent . . -}}
+      {{- end -}}
+      {{- with .source -}}
+        {{- $htmlContent = printf "%s<p><strong>GitHub:</strong> <a href=\"%s\">%s</a></p>" $htmlContent . . -}}
+      {{- end -}}
+      {{- with .docker -}}
+        {{- $htmlContent = printf "%s<p><strong>Docker:</strong> <a href=\"%s\">%s</a></p>" $htmlContent . . -}}
+      {{- end -}}
+      <item>
+        <title>{{ .name }} ({{ .category }})</title>
+        <link>{{ $appLink }}</link>
+        <pubDate>{{ $pubDate.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
+        <guid isPermaLink="false">app-{{ .slug }}</guid>
+        <category>{{ .category }}</category>
+        <description>{{ printf "<![CDATA[%s]]>" $htmlContent | safeHTML }}</description>
+      </item>
+    {{ end }}
+  </channel>
+</rss>
+

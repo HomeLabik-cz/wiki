@@ -1,0 +1,101 @@
+{{ define "main" }}
+<div class="wiki-content-header">
+  <div class="wiki-breadcrumb">
+    <a href="{{ "/" | relURL }}">Wiki</a>
+    <span>/</span>
+    {{ if and .Parent (not .Parent.IsHome) }}
+      <a href="{{ .Parent.RelPermalink }}">{{ .Parent.Title }}</a>
+      <span>/</span>
+    {{ end }}
+    <span class="active">{{ .Title }}</span>
+  </div>
+  <h1 class="page-title">{{ .Title }}</h1>
+  {{ with .Description }}
+    <p class="page-lead">{{ . }}</p>
+  {{ end }}
+</div>
+
+<div class="wiki-markdown-body">
+  {{ .Content }}
+  
+  {{ if .Pages }}
+    {{ $totalPosts := len .Pages }}
+    <!-- Section search -->
+    <div class="catalog-controls section-catalog-controls">
+      <div class="search-bar-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="sectionSearchInput" class="wiki-search-input" placeholder="Hledat v {{ .Title }}..." autocomplete="off">
+        <button id="clearSectionSearchBtn" class="clear-search-btn" style="display: none;" aria-label="Vymazat">&times;</button>
+      </div>
+
+      <div class="list-toolbar section-toolbar">
+        <div class="results-bar">
+          <span>Zobrazeno: <strong id="sectionVisibleCount">{{ $totalPosts }}</strong> z {{ $totalPosts }} článků</span>
+          <span id="sectionPageInfoText" class="page-info-text"></span>
+        </div>
+
+        <div class="per-page-control">
+          <label for="sectionPerPageSelect">Na stránku:</label>
+          <select id="sectionPerPageSelect" class="per-page-select" aria-label="Počet položek na stránku">
+            <option value="6" selected>6</option>
+            <option value="12">12</option>
+            <option value="24">24</option>
+            <option value="all">Vše</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Posts list -->
+    <div class="wiki-section-posts" id="sectionPostsList">
+      {{ range (union .Sections .RegularPages) }}
+        <a href="{{ .RelPermalink }}" class="wiki-post-card compact" data-title="{{ .Title | lower }}" data-desc="{{ .Description | lower }}">
+          <div class="wiki-post-card-left">
+            <div class="wiki-post-icon">
+              {{ if .IsSection }}
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+              {{ else }}
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+              {{ end }}
+            </div>
+            <div class="wiki-post-card-content">
+              <span class="wiki-post-title">{{ .Title }}</span>
+              {{ with .Description }}
+                <span class="wiki-post-desc">{{ . }}</span>
+              {{ end }}
+            </div>
+          </div>
+          <div class="wiki-post-card-right">
+            {{ $date := or .Lastmod .Date }}
+            {{ if $date }}
+              <span class="wiki-post-date" title="Poslední aktualizace">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>{{ $date.Format "2. 1. 2006" }}</span>
+              </span>
+            {{ end }}
+            <div class="wiki-post-arrow">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </div>
+        </a>
+      {{ end }}
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-results-box" id="sectionEmptyState" style="display: none; padding: 24px 16px; margin-top: 16px;">
+      <p style="margin: 0;">Nenalezen žádný článek odpovídající hledání.</p>
+    </div>
+
+    <!-- Pagination -->
+    <nav class="pagination-nav" id="sectionPaginationNav" style="display: none; margin-top: 20px;" aria-label="Stránkování článků">
+      <button class="pagination-btn" id="sectionPrevPageBtn" aria-label="Předchozí stránka" title="Předchozí stránka">
+        <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+      </button>
+      <div class="pagination-numbers" id="sectionPaginationNumbers"></div>
+      <button class="pagination-btn" id="sectionNextPageBtn" aria-label="Další stránka" title="Další stránka">
+        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+      </button>
+    </nav>
+  {{ end }}
+</div>
+{{ end }}

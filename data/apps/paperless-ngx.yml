@@ -1,0 +1,8 @@
+name: "Paperless-ngx"
+category: "Storage & Backup"
+website: "https://docs.paperless-ngx.com"
+source: "https://github.com/paperless-ngx/paperless-ngx"
+docker: "https://hub.docker.com/r/paperlessngx/paperless-ngx"
+icon: "paperless-ngx"
+added: "2026-10-12T09:15:00Z"
+description: "Systém pro správu a archivaci dokumentů s automatickým OCR, štítkováním atd."

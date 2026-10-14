@@ -1,0 +1,226 @@
+{{ define "main" }}
+{{ $apps := hugo.Data.apps }}
+{{ $totalApps := len $apps }}
+{{ $preferred := slice "Média a foto" "Síť a bezpečnost" "Monitoring a správa" "Automatizace a IoT" "Zálohování a úložiště" "Produktivita" }}
+{{ $categories := slice }}
+{{ range $preferred }}
+  {{ $p := . }}
+  {{ range $slug, $item := $apps }}
+    {{ if eq $item.category $p }}
+      {{ if not (in $categories $p) }}
+        {{ $categories = $categories | append $p }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ $extra := slice }}
+{{ range $slug, $item := $apps }}
+  {{ $c := $item.category }}
+  {{ if and $c (not (in $categories $c)) (not (in $extra $c)) }}
+    {{ $extra = $extra | append $c }}
+  {{ end }}
+{{ end }}
+{{ range (sort $extra) }}
+  {{ $categories = $categories | append . }}
+{{ end }}
+
+<div class="wiki-content-header">
+  <div class="wiki-breadcrumb">
+    <a href="{{ "/" | relURL }}">Wiki</a>
+    <span>/</span>
+    <span class="active">Seznam aplikací</span>
+  </div>
+
+  <div class="apps-header-row">
+    <div>
+      <h1 class="page-title">Seznam aplikací</h1>
+      <p class="page-lead">
+        Komunitní přehled ověřených self-hosted a open-source nástrojů pro Homelab.
+      </p>
+    </div>
+    <div class="apps-header-actions">
+      <a href="{{ "apps/index.xml" | relURL }}" target="_blank" rel="noopener" class="btn-simple-wiki rss-btn" title="RSS kanál nových aplikací" aria-label="RSS kanál">
+        <i class="fa-solid fa-rss" aria-hidden="true"></i>
+        <span>RSS feed</span>
+      </a>
+      <a href="{{ .Site.Params.issueNewAppUrl }}" target="_blank" rel="noopener" class="btn-simple-wiki">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        <span>Navrhnout aplikaci</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Search and filters -->
+<div class="catalog-controls">
+  <div class="search-bar-wrap">
+    <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="appSearchInput" class="wiki-search-input" placeholder="Hledat aplikaci podle názvu, popisu nebo klíčového slova..." autocomplete="off">
+    <button id="clearSearchBtn" class="clear-search-btn" style="display: none;" aria-label="Vymazat">&times;</button>
+  </div>
+
+  <!-- Filter controls -->
+  <div class="list-toolbar">
+    <div class="results-bar">
+      <span>Zobrazeno: <strong id="visibleCount">{{ $totalApps }}</strong> z {{ $totalApps }} aplikací</span>
+      <span id="pageInfoText" class="page-info-text"></span>
+      <button id="resetFiltersBtn" class="reset-link" style="display: none;">Resetovat filtry</button>
+    </div>
+
+    <div class="toolbar-controls-group">
+      <div class="per-page-control">
+        <label for="categorySelect">Kategorie:</label>
+        <select id="categorySelect" class="per-page-select" aria-label="Filtrovat podle kategorie">
+          <option value="all" selected>Všechny ({{ $totalApps }})</option>
+          {{ range $categories }}
+            {{ $catName := . }}
+            {{ $count := 0 }}
+            {{ range $slug, $item := $apps }}
+              {{ if eq $item.category $catName }}
+                {{ $count = add $count 1 }}
+              {{ end }}
+            {{ end }}
+            <option value="{{ $catName }}">{{ $catName }} ({{ $count }})</option>
+          {{ end }}
+        </select>
+      </div>
+
+      <div class="per-page-control">
+        <label for="appSortSelect">Řazení:</label>
+        <select id="appSortSelect" class="per-page-select" aria-label="Řazení aplikací">
+          <option value="newest" selected>Nejnovější</option>
+          <option value="oldest">Nejstarší</option>
+          <option value="az">Podle abecedy (A–Z)</option>
+          <option value="za">Podle abecedy (Z–A)</option>
+        </select>
+      </div>
+
+      <div class="per-page-control">
+        <label for="perPageSelect">Na stránku:</label>
+        <select id="perPageSelect" class="per-page-select" aria-label="Počet položek na stránku">
+          <option value="8" selected>8</option>
+          <option value="24">24</option>
+          <option value="48">48</option>
+          <option value="96">96</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- App cards grid -->
+<div class="wiki-apps-grid" id="appsGrid">
+  {{ range $slug, $app := $apps }}
+    <article class="wiki-app-card" 
+             data-name="{{ $app.name | lower }}" 
+             data-category="{{ $app.category }}" 
+             data-slug="{{ $slug }}"
+             data-desc="{{ $app.description | lower }}"
+             data-date="{{ with $app.added }}{{ . }}{{ else }}2026-10-12{{ end }}">
+      <div class="app-card-top">
+        <div class="app-icon-box">
+          <div class="app-icon-fallback" title="{{ $app.name }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-box" aria-hidden="true">
+              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+              <path d="m3.3 7 8.7 5 8.7-5"/>
+              <path d="M12 22V12"/>
+            </svg>
+          </div>
+          {{ $iconName := or $app.icon $slug }}
+          {{ if and $iconName (ne $iconName "cube") (ne $iconName "none") (ne $iconName "placeholder") }}
+            <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/{{ $iconName }}.svg" 
+                 alt="{{ $app.name }}" 
+                 width="30" 
+                 height="30"
+                 style="display: none;"
+                 onload="this.style.display='block'; if (this.previousElementSibling) this.previousElementSibling.style.display='none';"
+                 onerror="this.remove();">
+          {{ end }}
+        </div>
+
+        <div class="app-title-group">
+          <h2 class="app-title">{{ $app.name }}</h2>
+          <span class="category-badge">{{ $app.category }}</span>
+        </div>
+      </div>
+
+      <p class="app-desc">
+        {{ $app.description }}
+      </p>
+
+      <div class="app-card-bottom">
+        <div class="app-action-links">
+          {{ with $app.source }}
+            <a href="{{ . }}" target="_blank" rel="noopener" class="app-link-btn" title="GitHub repozitář" aria-label="GitHub repozitář">
+              <i class="fa-brands fa-github" aria-hidden="true"></i>
+            </a>
+          {{ end }}
+          {{ with $app.docker }}
+            {{ $dockerUrl := . }}
+            {{ if not (strings.HasPrefix . "http") }}
+              {{ if strings.HasPrefix . "ghcr.io/" }}
+                {{ $dockerUrl = printf "https://%s" . }}
+              {{ else if not (strings.Contains . "/") }}
+                {{ $dockerUrl = printf "https://hub.docker.com/_/%s" . }}
+              {{ else }}
+                {{ $dockerUrl = printf "https://hub.docker.com/r/%s" . }}
+              {{ end }}
+            {{ end }}
+            <a href="{{ $dockerUrl }}" target="_blank" rel="noopener" class="app-link-btn" title="Docker Hub / kontejner" aria-label="Docker Hub">
+              <i class="fa-brands fa-docker" aria-hidden="true"></i>
+            </a>
+          {{ end }}
+          {{ with $app.website }}
+            <a href="{{ . }}" target="_blank" rel="noopener" class="app-link-btn" title="Oficiální web" aria-label="Oficiální web">
+              <i class="fa-solid fa-globe" aria-hidden="true"></i>
+            </a>
+          {{ end }}
+        </div>
+
+        {{ $addedFormatted := "12. 10. 2026" }}
+        {{ $titleTooltip := "12. 10. 2026" }}
+        {{ with $app.added }}
+          {{ $t := (time .).Local }}
+          {{ $addedFormatted = time.Format "2. 1. 2006" $t }}
+          {{ if or (strings.Contains (string .) "T") (strings.Contains (string .) ":") }}
+            {{ $titleTooltip = time.Format "2. 1. 2006 15:04" $t }}
+          {{ else }}
+            {{ $titleTooltip = time.Format "2. 1. 2006" $t }}
+          {{ end }}
+        {{ end }}
+        <div class="app-date" title="{{ $titleTooltip }}">
+          <i class="fa-regular fa-calendar-days" aria-hidden="true"></i>
+          <span>{{ $addedFormatted }}</span>
+        </div>
+      </div>
+    </article>
+  {{ end }}
+</div>
+
+<!-- Empty state -->
+<div class="empty-results-box" id="emptyState" style="display: none;">
+  <p>Nenašli jsme žádnou aplikaci odpovídající dotazu.</p>
+  <a href="{{ .Site.Params.issueNewAppUrl }}" target="_blank" rel="noopener" class="btn-simple-wiki">Navrhnout aplikaci do seznamu</a>
+</div>
+
+<!-- Pagination -->
+<nav class="pagination-nav" id="paginationNav" style="display: none;" aria-label="Stránkování seznamu">
+  <button class="pagination-btn" id="prevPageBtn" aria-label="Předchozí stránka" title="Předchozí stránka">
+    <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+  </button>
+  <div class="pagination-numbers" id="paginationNumbers"></div>
+  <button class="pagination-btn" id="nextPageBtn" aria-label="Další stránka" title="Další stránka">
+    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+  </button>
+</nav>
+
+<!-- Suggest new app card -->
+<div class="wiki-contribute-card">
+  <div class="contribute-card-icon">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+  </div>
+  <div class="contribute-card-text">
+    Chybí ti tu aplikace? Navrhni ji přes <a href="{{ .Site.Params.issueNewAppUrl }}" target="_blank" rel="noopener">GitHub Issues</a> !
+  </div>
+</div>
+{{ end }}

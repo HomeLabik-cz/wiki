@@ -1,0 +1,8 @@
+name: "Jellyfin"
+category: "Media"
+website: "https://jellyfin.org"
+source: "https://github.com/jellyfin/jellyfin"
+docker: "https://hub.docker.com/r/jellyfin/jellyfin"
+icon: "jellyfin"
+added: "2026-09-15T14:30:00Z"
+description: "Mediální server pro streamování filmů, seriálů a hudby do jakéhokoliv zařízení."

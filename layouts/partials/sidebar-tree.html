@@ -1,0 +1,35 @@
+{{ $sec := .section }}
+{{ $current := .current }}
+{{ $depth := .depth | default 1 }}
+{{ $isBranchActive := or (eq $current.RelPermalink $sec.RelPermalink) ($current.IsDescendant $sec) }}
+{{ $hasChildren := or (gt (len $sec.Sections) 0) (gt (len $sec.RegularPages) 0) }}
+
+<li class="tree-node depth-{{ $depth }}{{ if $isBranchActive }} branch-active{{ end }}">
+  <div class="tree-row{{ if eq $current.RelPermalink $sec.RelPermalink }} active{{ end }}">
+    <a href="{{ $sec.RelPermalink }}" class="tree-link">
+      <svg class="tree-icon folder-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+      <span class="tree-text">{{ $sec.Title }}</span>
+    </a>
+    {{ if $hasChildren }}
+      <button class="tree-toggle-btn{{ if $isBranchActive }} expanded{{ end }}" aria-label="Rozbalit / sbalit podsekci" type="button">
+        <svg class="tree-chevron" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    {{ end }}
+  </div>
+
+  {{ if and $hasChildren (le $depth 3) }}
+    <ul class="tree-children{{ if $isBranchActive }} open{{ end }}">
+      {{ range $sec.Sections }}
+        {{ partial "sidebar-tree.html" (dict "section" . "current" $current "depth" (add $depth 1)) }}
+      {{ end }}
+      {{ range $sec.RegularPages }}
+        <li class="tree-leaf">
+          <a href="{{ .RelPermalink }}" class="tree-link leaf-link{{ if eq $current.RelPermalink .RelPermalink }} active{{ end }}" title="{{ .Title }}">
+            <svg class="tree-icon doc-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span class="tree-text">{{ .Title }}</span>
+          </a>
+        </li>
+      {{ end }}
+    </ul>
+  {{ end }}
+</li>

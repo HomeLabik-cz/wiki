@@ -1,0 +1,73 @@
+<aside class="wiki-sidebar" id="wikiSidebar">
+  <div class="sidebar-inner">
+    <!-- Main navigation -->
+    <div class="sidebar-section">
+      <div class="sidebar-title">Hlavní navigace</div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="{{ "/" | relURL }}" class="sidebar-link{{ if .IsHome }} active{{ end }}">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span class="sidebar-text">Úvodní stránka</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Applications -->
+    <div class="sidebar-section">
+      <div class="sidebar-title">Aplikace</div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="{{ "apps/" | relURL }}" class="sidebar-link{{ if eq .Section "apps" }} active{{ end }}">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+            <span class="sidebar-text">Seznam aplikací</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ "contributing/" | relURL }}" class="sidebar-link{{ if eq .RelPermalink "/contributing/" }} active{{ end }}">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            <span class="sidebar-text">Jak přispět</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Category tree -->
+    {{ $customSections := where site.Sections "Section" "ne" "apps" }}
+    {{ if gt (len $customSections) 0 }}
+    <div class="sidebar-section">
+      <div class="sidebar-title">Kategorie</div>
+      <ul class="sidebar-tree-root">
+        {{ range $customSections }}
+          {{ partial "sidebar-tree.html" (dict "section" . "current" $ "depth" 1) }}
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+
+    <!-- External links -->
+    <div class="sidebar-section">
+      <div class="sidebar-title">Odkazy</div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="https://homelabik.cz" target="_blank" rel="noopener" class="sidebar-link">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span class="sidebar-text">HomeLabik.cz</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://homelabik.cz/discord" target="_blank" rel="noopener" class="sidebar-link">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span class="sidebar-text">Discord</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ .Site.Params.githubRepo }}" target="_blank" rel="noopener" class="sidebar-link">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span class="sidebar-text">GitHub</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</aside>

@@ -1,0 +1,8 @@
+name: "Pi-hole"
+category: "Síť"
+website: "https://pi-hole.net"
+source: "https://github.com/pi-hole/pi-hole"
+docker: "https://hub.docker.com/r/pihole/pihole"
+icon: "pi-hole"
+added: "2026-09-28T16:20:00Z"
+description: "Síťový blokátor reklam, telemetrie a trackerů na úrovni DNS pro ochranu všech zařízení v domácí síti."

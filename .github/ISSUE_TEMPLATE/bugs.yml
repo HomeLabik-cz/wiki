@@ -1,0 +1,36 @@
+name: "Nahlášení chyb"
+description: "Zde nahlašuj všechny chyby"
+labels: ["bug"]
+body:
+  - type: input
+    id: location
+    attributes:
+      label: "Kde se chyba vyskytuje"
+      description: "Odkaz na stránku nebo konkrétní sekci."
+      placeholder: "např. https://wiki.homelabik.cz/apps/ nebo navbar."
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: "Popis chyby"
+      description: "Co přesně nefunguje a co se mělo stát?"
+      placeholder: "Popis chyby..."
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Kroky k reprodukci (volitelné)"
+      description: "Jak chybu zopakovat?"
+      placeholder: "1. Otevřít stránku...\n2. Kliknout na..."
+    validations:
+      required: false
+  - type: textarea
+    id: extra_info
+    attributes:
+      label: "Doplňující informace, screenshoty, prostředí atd. (Volitelné)"
+      description: "Prohlížeč, zařízení nebo screenshot (lze přetáhnout přímo sem do textu)."
+      placeholder: "např. Firefox na Windows, mobilní zobrazení..."
+    validations:
+      required: false

@@ -1,0 +1,8 @@
+name: "Umami"
+category: "Monitoring"
+website: "https://umami.is"
+source: "https://github.com/umami-software/umami"
+docker: "https://hub.docker.com/r/umamisoftware/umami"
+icon: "umami"
+added: "2026-10-11T13:40:00Z"
+description: "Jednoduchá, rychlá a na soukromí zaměřená webová analytika jako alternativa ke Google Analytics."

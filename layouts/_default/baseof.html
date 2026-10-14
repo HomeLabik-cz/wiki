@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="cs" id="top">
+{{ partial "head.html" . }}
+<body class="wiki-body">
+  {{ partial "navbar.html" . }}
+  
+  <div class="wiki-wrapper">
+    <div class="wiki-layout-container">
+      {{ partial "sidebar.html" . }}
+      
+      <main class="wiki-main" id="wikiMain">
+        {{ block "main" . }}{{ end }}
+      </main>
+    </div>
+  </div>
+
+  {{ partial "footer.html" . }}
+  <script src="{{ "js/wiki.js" | relURL }}?v={{ now.Unix }}"></script>
+</body>
+</html>

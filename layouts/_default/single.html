@@ -1,0 +1,30 @@
+{{ define "main" }}
+<div class="wiki-content-header">
+  <div class="wiki-breadcrumb">
+    <a href="{{ "/" | relURL }}">Wiki</a>
+    <span>/</span>
+    {{ if and (ne .Section "") (ne .Section "page") }}
+      <a href="{{ .CurrentSection.RelPermalink }}">{{ .CurrentSection.Title }}</a>
+      <span>/</span>
+    {{ end }}
+    <span class="active">{{ .Title }}</span>
+  </div>
+  <h1 class="page-title">{{ .Title }}</h1>
+  {{ with .Description }}
+    <p class="page-lead">{{ . }}</p>
+  {{ end }}
+  {{ $lastmod := or .Lastmod .Date }}
+  {{ if $lastmod }}
+    <div class="page-meta-row">
+      <span class="page-meta-item" title="Datum poslední aktualizace článku">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Poslední aktualizace: {{ $lastmod.Format "2. 1. 2006" }}</span>
+      </span>
+    </div>
+  {{ end }}
+</div>
+
+<div class="wiki-markdown-body">
+  {{ .Content }}
+</div>
+{{ end }}

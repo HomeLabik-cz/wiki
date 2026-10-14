@@ -1,0 +1,8 @@
+name: "qBittorrent"
+category: "Downloads"
+website: "https://www.qbittorrent.org"
+source: "https://github.com/qbittorrent/qBittorrent"
+docker: "https://hub.docker.com/r/linuxserver/qbittorrent"
+icon: "qbittorrent"
+added: "2026-10-13T11:30:00Z"
+description: "Open-source BitTorrent klient s webovým rozhraním pro stahování a správu torrentů."

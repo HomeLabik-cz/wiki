@@ -1,0 +1,63 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ if .IsHome }}HomeLabik Wiki — Znalostní báze a seznam aplikací{{ else }}{{ .Title }} | HomeLabik Wiki{{ end }}</title>
+
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  <meta name="author" content="HomeLabik.cz">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="{{ if .IsHome }}HomeLabik Wiki{{ else }}{{ .Title }} | HomeLabik Wiki{{ end }}">
+  <meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ .Permalink }}">
+
+  <!-- Local web fonts -->
+  <link rel="preload" href="{{ "fonts/outfit-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ "fonts/outfit-latin-ext.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ "fonts/inter-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ "fonts/inter-latin-ext.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+
+  <!-- Apps RSS feed -->
+  <link rel="alternate" type="application/rss+xml" title="HomeLabik Wiki — Seznam aplikací RSS" href="{{ "apps/index.xml" | absURL }}">
+
+  <!-- App icons CDN -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <!-- Google Fonts fallback -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+  <!-- Main CSS styles -->
+  <link rel="stylesheet" href="{{ "css/style.css" | relURL }}?v={{ now.Unix }}">
+  <link rel="icon" type="image/png" href="{{ "images/logo.png" | relURL }}">
+  <link rel="apple-touch-icon" href="{{ "images/logo.png" | relURL }}">
+
+  <!-- Init theme -->
+  <script>
+    (function () {
+      function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+        return match ? decodeURIComponent(match[3]) : null;
+      }
+      const cookieTheme = getCookie('theme');
+      let localTheme = null;
+      try {
+        localTheme = localStorage.getItem('theme');
+      } catch (e) {}
+      const savedTheme = cookieTheme || localTheme;
+
+      if (savedTheme === 'light' || savedTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } else {
+        const systemPrefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        document.documentElement.setAttribute('data-theme', systemPrefersLight ? 'light' : 'dark');
+      }
+    })();
+  </script>
+</head>

@@ -1,0 +1,8 @@
+name: "Nextcloud"
+category: "Storage & Backup"
+website: "https://nextcloud.com"
+source: "https://github.com/nextcloud/server"
+docker: "https://hub.docker.com/_/nextcloud"
+icon: "nextcloud"
+added: "2026-09-20T11:45:00Z"
+description: "Plnohodnotný privátní cloud pro bezpečné ukládání souborů, sdílení kalendářů, kontaktů a týmovou práci."

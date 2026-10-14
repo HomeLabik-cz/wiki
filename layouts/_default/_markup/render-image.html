@@ -1,0 +1,14 @@
+{{- $dest := .Destination -}}
+{{- $alt := .Text -}}
+{{- $title := .Title -}}
+{{- $u := urls.Parse $dest -}}
+{{- $fragment := $u.Fragment -}}
+
+{{- if $title -}}
+<figure class="wiki-figure{{ with $fragment }} wiki-img-{{ . }}{{ end }}">
+  <img src="{{ $dest | safeURL }}" alt="{{ $alt }}" title="{{ $title }}" loading="lazy" decoding="async" class="wiki-img">
+  <figcaption class="wiki-figcaption">{{ $title }}</figcaption>
+</figure>
+{{- else -}}
+<img src="{{ $dest | safeURL }}" alt="{{ $alt }}" loading="lazy" decoding="async" class="wiki-img{{ with $fragment }} wiki-img-{{ . }}{{ end }}">
+{{- end -}}

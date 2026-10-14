@@ -1,0 +1,209 @@
+name: Issue to App PR
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  create-pr:
+    name: Create PR from App Issue
+    if: contains(github.event.issue.labels.*.name, 'app') || contains(github.event.issue.labels.*.name, 'aplikace')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Parse Issue and generate YAML
+        id: parse
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = context.payload.issue.body || '';
+
+            function escapeRegex(str) {
+              return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            }
+
+            function getField(label) {
+              const escaped = escapeRegex(label);
+              const regex = new RegExp(`^###\\s+${escaped}\\s*$\\r?\\n([\\s\\S]*?)(?=^###|$)`, 'im');
+              const match = body.match(regex);
+              if (!match) return '';
+              const val = match[1].trim();
+              const clean = val.replace(/[_*`]/g, '').trim().toLowerCase();
+              if (clean === 'no response' || clean === 'zadna odpoved' || clean === 'žádná odpověď' || clean === '') {
+                return '';
+              }
+              return val;
+            }
+
+            // Extract app name from explicit field or from issue title (stripping legacy [App]: prefix)
+            let rawTitle = (context.payload.issue.title || '').trim();
+            const fieldAppName = getField('Název aplikace');
+            const appName = fieldAppName || rawTitle.replace(/^\[App\]:\s*/i, '').replace(/^\(bude doplněno automaticky\)/i, '').trim();
+
+            if (!appName) {
+              core.setFailed('Missing app name in Issue title or form body.');
+              return;
+            }
+
+            // Keep issue title clean: just the app name (without [App]: prefix)
+            const targetTitle = appName;
+            if (context.payload.issue.title !== targetTitle) {
+              try {
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  title: targetTitle
+                });
+                core.info(`Issue title automatically updated to: "${targetTitle}".`);
+              } catch (err) {
+                core.warning(`Failed to update issue title: ${err.message}`);
+              }
+            }
+
+            const category = getField('Kategorie') || getField('Kategorie / Tagy') || getField('Tagy');
+            const source = getField('GitHub') || getField('GitHub repozitář (povinné)') || getField('Repozitář se zdrojovým kódem') || getField('GitHub repozitář');
+            let website = getField('Webové stránky / docs projektu (Volitelné)') || getField('Oficiální web aplikace (volitelné)') || getField('Oficiální web aplikace') || getField('Webové stránky');
+            let docker = getField('Docker Hub (Volitelné)') || getField('Docker Hub / kontejnerový obraz (volitelné)') || getField('Docker Hub');
+            const description = getField('Krátký popis') || getField('Krátký popis (1-2 věty v češtině)');
+
+            if (website && !website.startsWith('http://') && !website.startsWith('https://')) {
+              website = 'https://' + website;
+            }
+
+            if (!category || !source || !description) {
+              core.setFailed(`Missing required fields: category="${category}", source="${source}", description="${description}".`);
+              return;
+            }
+
+            // Normalize and safely strip Czech diacritics to build slug
+            const fileSlug = appName
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .toLowerCase()
+              .trim()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/^-+|-+$/g, '');
+
+            if (!fileSlug || fileSlug.length < 2) {
+              core.setFailed(`Could not generate valid slug from app name "${appName}".`);
+              return;
+            }
+
+            const dir = 'data/apps';
+            const filePath = `${dir}/${fileSlug}.yml`;
+
+            if (fs.existsSync(filePath)) {
+              core.setOutput('duplicate', 'true');
+              core.setOutput('slug', fileSlug);
+              core.setOutput('name', appName);
+              core.info(`App ${fileSlug} already exists in catalog.`);
+              return;
+            }
+
+            if (!fs.existsSync(dir)) {
+              fs.mkdirSync(dir, { recursive: true });
+            }
+
+            // Safe YAML string escaping via JSON.stringify
+            const q = (str) => JSON.stringify(str || '');
+            const addedTime = context.payload.issue.created_at || new Date().toISOString();
+
+            const lines = [
+              `name: ${q(appName)}`,
+              `category: ${q(category)}`,
+              `source: ${q(source)}`
+            ];
+            if (website) lines.push(`website: ${q(website)}`);
+            if (docker) lines.push(`docker: ${q(docker)}`);
+            const icon = getField('Ikona') || getField('Icon') || 'cube';
+            lines.push(`icon: ${q(icon)}`);
+            lines.push(`added: ${q(addedTime)}`);
+            lines.push(`description: ${q(description)}`);
+
+            fs.writeFileSync(filePath, lines.join('\n') + '\n');
+            core.setOutput('duplicate', 'false');
+            core.setOutput('slug', fileSlug);
+            core.setOutput('name', appName);
+            core.setOutput('filepath', filePath);
+
+      - name: Notify duplicate (if app already exists)
+        if: steps.parse.outputs.duplicate == 'true'
+        uses: actions/github-script@v7
+        env:
+          APP_NAME: ${{ steps.parse.outputs.name }}
+          SLUG: ${{ steps.parse.outputs.slug }}
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `Ahoj, aplikace **${process.env.APP_NAME}** (\`${process.env.SLUG}.yml\`) již v seznamu existuje.\nPokud do ní chceš doplnit informace nebo upravit stávající záznam, vytvoř Blank issue nebo PR a uveď změny.`
+            });
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['duplicate']
+            });
+
+      - name: Set up Python for validation
+        if: steps.parse.outputs.duplicate == 'false'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate newly added app
+        if: steps.parse.outputs.duplicate == 'false'
+        id: validate
+        run: |
+          pip install pyyaml
+          set +e
+          output=$(python3 scripts/validate_apps.py 2>&1)
+          exit_code=$?
+          set -e
+          if [ $exit_code -ne 0 ]; then
+            echo "valid=false" >> $GITHUB_OUTPUT
+            rm -f "${{ steps.parse.outputs.filepath }}"
+          else
+            echo "valid=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.parse.outputs.duplicate == 'false' && steps.validate.outputs.valid == 'true'
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "feat(apps): add ${{ steps.parse.outputs.name }} from Issue #${{ github.event.issue.number }}"
+          branch: "app-${{ steps.parse.outputs.slug }}"
+          title: "Add app: ${{ steps.parse.outputs.name }}"
+          body: |
+            Vygenerovaný PR z #${{ github.event.issue.number }} od @${{ github.event.issue.user.login }}.
+            Closes #${{ github.event.issue.number }}
+          labels: "app, automated"
+
+      - name: Post confirmation comment to Issue
+        if: steps.parse.outputs.duplicate == 'false' && steps.validate.outputs.valid == 'true' && steps.cpr.outputs.pull-request-operation == 'created'
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
+          PR_URL: ${{ steps.cpr.outputs.pull-request-url }}
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `Ahoj, díky za návrh!\n\nPR byl vytvořen: #${process.env.PR_NUMBER}\nIssue se uzavře po schválení.`
+            });

@@ -1,0 +1,8 @@
+name: "Uptime Kuma"
+category: "Monitoring"
+website: "https://uptime.kuma.pet"
+source: "https://github.com/louislam/uptime-kuma"
+docker: "https://hub.docker.com/r/louislam/uptime-kuma"
+icon: "uptime-kuma"
+added: "2026-10-04T15:10:00Z"
+description: "Samoobslužný nástroj pro monitoring dostupnosti služeb a webů v reálném čase."
