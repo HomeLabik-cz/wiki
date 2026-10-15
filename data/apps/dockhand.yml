@@ -1,0 +1,7 @@
+name: "Dockhand"
+category: "Deployment"
+source: "https://github.com/Finsys/dockhand"
+website: "https://dockhand.pro/"
+docker: "https://hub.docker.com/r/fnsys/dockhand/"
+added: "2026-10-15T20:22:40Z"
+description: "Moderní webové rozhraní pro správu Docker kontejnerů, Compose stacků a jejich nasazování na jednom či více serverech."
