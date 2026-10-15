@@ -1,5 +1,5 @@
 name: "Paperless-ngx"
-category: "Storage & Backup"
+category: "Media"
 website: "https://docs.paperless-ngx.com"
 source: "https://github.com/paperless-ngx/paperless-ngx"
 docker: "https://hub.docker.com/r/paperlessngx/paperless-ngx"

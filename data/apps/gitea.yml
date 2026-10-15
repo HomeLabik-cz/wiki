@@ -1,0 +1,8 @@
+name: "Gitea"
+category: "Vývoj"
+website: "https://about.gitea.com/"
+source: "https://github.com/go-gitea/gitea"
+docker: "https://hub.docker.com/r/gitea/gitea"
+icon: "gitea"
+added: "2026-10-15T20:55:00+02:00"
+description: "Lehká a rychlá alternativa ke GitHubu s minimálními nároky."

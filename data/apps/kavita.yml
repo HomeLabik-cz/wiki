@@ -1,0 +1,8 @@
+name: "Kavita"
+category: "Media"
+website: "https://www.kavitareader.com/"
+source: "https://github.com/Kareadita/Kavita"
+docker: "https://hub.docker.com/r/linuxserver/kavita"
+icon: "kavita"
+added: "2026-10-15T21:19:00+02:00"
+description: "Webová open-source alternativa k AirDropu pro snadný přenos souborů po síti."

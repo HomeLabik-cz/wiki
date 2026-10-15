@@ -1,0 +1,8 @@
+name: "Miniflux"
+category: "Media"
+website: "https://miniflux.app/"
+source: "https://github.com/miniflux/miniflux"
+docker: "https://hub.docker.com/r/miniflux/miniflux"
+icon: "miniflux"
+added: "2026-10-15T21:04:00+02:00"
+description: "Jednoduchá webová čtečka RSS feedů bez zbytečností."

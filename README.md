@@ -1,5 +1,7 @@
 # HomeLabik.cz Wiki 📚
 
+![banner](thumb.jpg)
+
 Naše oficiální komunitní wiki pro 🇨🇿 🇸🇰 nadšence do homelabu.
 
 ---

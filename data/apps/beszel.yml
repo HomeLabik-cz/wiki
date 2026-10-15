@@ -1,0 +1,8 @@
+name: "Beszel"
+category: "Monitoring"
+website: "https://www.beszel.dev/"
+source: "https://github.com/henrygd/beszel"
+docker: "https://hub.docker.com/r/henrygd/beszel"
+icon: "beszel"
+added: "2026-10-15T20:52:00+02:00"
+description: "Jednoduchý nástroj pro monitoring systému a kontejnerů s pěkným dashboardem."

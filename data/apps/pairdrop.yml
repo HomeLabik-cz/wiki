@@ -1,0 +1,7 @@
+name: "PairDrop"
+category: "Files"
+source: "https://github.com/schlagmichdoch/pairdrop"
+docker: "https://hub.docker.com/r/linuxserver/pairdrop"
+icon: "pairdrop"
+added: "2026-10-15T21:12:00+02:00"
+description: "Webová open-source alternativa k AirDropu pro snadný přenos souborů po síti."

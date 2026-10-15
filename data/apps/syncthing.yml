@@ -1,5 +1,5 @@
 name: "Syncthing"
-category: "Sync"
+category: "Files"
 website: "https://syncthing.net"
 source: "https://github.com/syncthing/syncthing"
 docker: "https://hub.docker.com/r/syncthing/syncthing"

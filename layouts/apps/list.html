@@ -134,7 +134,7 @@
                  height="30"
                  style="display: none;"
                  onload="this.style.display='block'; if (this.previousElementSibling) this.previousElementSibling.style.display='none';"
-                 onerror="this.remove();">
+                 onerror="if (!this.dataset.fallback) { this.dataset.fallback = 'png'; this.src = 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/{{ $iconName }}.png'; } else { this.remove(); }">
           {{ end }}
         </div>
 

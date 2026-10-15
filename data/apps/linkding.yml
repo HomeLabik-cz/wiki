@@ -1,0 +1,8 @@
+name: "Linkding"
+category: "Media"
+website: "https://linkding.link/"
+source: "https://github.com/sissbruecker/linkding"
+docker: "https://hub.docker.com/r/sissbruecker/linkding"
+icon: "linkding"
+added: "2026-10-15T21:03:00+02:00"
+description: "Systém pro správu a archivaci dokumentů, lehčí alternativa k Paperless-ngx."

@@ -1,0 +1,8 @@
+name: "Audiobookshelf"
+category: "Media"
+website: "https://www.audiobookshelf.org/"
+source: "https://github.com/advplyr/audiobookshelf"
+docker: "https://hub.docker.com/r/advplyr/audiobookshelf"
+icon: "audiobookshelf"
+added: "2026-10-15T21:24:00+02:00"
+description: "Přehledná self-hosted platforma pro poslech audioknih a odběr podcastů."

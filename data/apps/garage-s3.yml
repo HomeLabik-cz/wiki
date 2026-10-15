@@ -1,6 +1,7 @@
 name: "Garage S3"
-category: "Storage"
+category: "Files"
 source: "https://git.deuxfleurs.fr/Deuxfleurs/garage"
 website: "https://garagehq.deuxfleurs.fr/"
+icon: "garage"
 added: "2026-10-15T16:35:29Z"
 description: "Selfhosted AWS-like S3 - opensource obdoba Cephu."

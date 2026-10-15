@@ -1,0 +1,8 @@
+name: "Stirling PDF"
+category: "Files"
+website: "https://www.stirling.com/"
+source: "https://github.com/Stirling-Tools/stirling-pdf"
+docker: "https://hub.docker.com/r/stirlingtools/stirling-pdf"
+icon: "stirling-pdf"
+added: "2026-10-15T21:24:00+02:00"
+description: "Lokální alternativa k online nástrojům pro práci s PDF."

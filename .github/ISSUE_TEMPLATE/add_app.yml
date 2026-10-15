@@ -36,6 +36,14 @@ body:
       placeholder: "https://immich.app/"
     validations:
       required: false
+  - type: input
+    id: icon
+    attributes:
+      label: "Ikona (Volitelné)"
+      description: "Název ikony z https://dashboardicons.com/ (např. 'wireguard' pro wg-easy). Pokud necháš prázdné, použije se název aplikace."
+      placeholder: "např. immich"
+    validations:
+      required: false
   - type: textarea
     id: description
     attributes:

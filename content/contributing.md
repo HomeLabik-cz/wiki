@@ -16,8 +16,13 @@ Veškeré návrhy probíhají výhradně prostřednictvím **GitHub Issues**, kd
 3. Odešli Issue.
 4. Návrh projdeme a po přijmutí se automaticky nasadí na web.
 
+### Další možnosti
+- Vytvoř [PR](https://github.com/HomeLabik-cz/wiki/pulls) na GitHubu.
+- Vyplň [Formulář](https://forms.homelabik.cz/forms/app-wiki).
+- Pošli svůj návrh do roomky `🛠️・zajimave-projekty` na [našem Discordu](https://homelabik.cz/discord/).
+
 ## Podmínky pro zařazení aplikace
 
-- **Open-source nebo freeware bez vendor lock-inu** 
-- **Aktivní vývoj** (Projekt nesmí být plně opuštěný, ideálně aktualizace v posledních 12 měsících)
+- **Open-source nebo freeware bez vendor lock-inu.** 
+- **Aktivní vývoj** (Projekt nesmí být plně opuštěný, ideálně aktualizace v posledních 12 měsících).
 - **Popis musí být psán stručně a srozumitelně v češtině.**

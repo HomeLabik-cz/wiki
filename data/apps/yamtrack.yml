@@ -1,0 +1,7 @@
+name: "YamTrack"
+category: "Tracking"
+source: "https://github.com/FuzzyGrim/Yamtrack"
+docker: "https://ghcr.io/fuzzygrim/yamtrack"
+icon: "yamtrack"
+added: "2026-10-15T21:37:00+02:00"
+description: "Jednoduchý tracker pro filmy, seriály, anime, hry, knihy atd."

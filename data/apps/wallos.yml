@@ -1,0 +1,8 @@
+name: "Wallos"
+category: "Tracking"
+website: "https://wallosapp.com/"
+source: "https://github.com/ellite/wallos"
+docker: "https://hub.docker.com/r/bellamy/wallos"
+icon: "wallos"
+added: "2026-10-15T21:42:00+02:00"
+description: "Přehledný dashboard pro sledování předplatných, s podporou notifikací o blížící se platbě."

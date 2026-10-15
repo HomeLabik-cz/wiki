@@ -1,0 +1,8 @@
+name: "OpenCloud"
+category: "Files"
+website: "https://opencloud.eu/en"
+source: "https://github.com/opencloud-eu"
+docker: "https://hub.docker.com/r/opencloudeu/opencloud"
+icon: "open-cloud"
+added: "2026-10-15T21:30:00+02:00"
+description: "Moderní a lehká platforma pro bezpečné ukládání, synchronizaci a sdílení souborů."

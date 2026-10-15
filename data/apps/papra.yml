@@ -1,0 +1,7 @@
+name: "Papra"
+category: "Media"
+website: "https://papra.app/"
+source: "https://github.com/papra-hq/papra"
+icon: "papra"
+added: "2026-10-15T20:58:00+02:00"
+description: "Systém pro správu a archivaci dokumentů, lehčí alternativa k Paperless-ngx."

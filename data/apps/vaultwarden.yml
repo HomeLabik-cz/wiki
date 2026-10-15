@@ -1,0 +1,8 @@
+name: "Vaultwarden"
+category: "Security"
+website: "https://vaultwarden.com/"
+source: "https://github.com/dani-garcia/vaultwarden"
+docker: "https://hub.docker.com/r/vaultwarden/server"
+icon: "vaultwarden"
+added: "2026-10-15T21:06:00+02:00"
+description: "Lehký správce hesel plně kompatibilní s oficiálními aplikacemi Bitwarden."

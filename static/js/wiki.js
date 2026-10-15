@@ -145,13 +145,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Check cached icons
     document.querySelectorAll('.app-icon-box img').forEach(img => {
-      if (img.complete) {
-        if (img.naturalWidth > 0) {
-          img.style.display = 'block';
-          if (img.previousElementSibling) img.previousElementSibling.style.display = 'none';
-        } else {
-          img.remove();
-        }
+      if (img.complete && img.naturalWidth > 0) {
+        img.style.display = 'block';
+        if (img.previousElementSibling) img.previousElementSibling.style.display = 'none';
       }
     });
 
