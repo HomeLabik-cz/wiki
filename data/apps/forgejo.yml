@@ -1,6 +1,6 @@
 name: "Forgejo"
 category: "Vývoj"
-source: "https://code.forgejo.org/forgejo/forgejo"
+source: "https://codeberg.org/forgejo/forgejo"
 website: "https://forgejo.org/"
 icon: "forgejo"
 added: "2026-10-19T11:14:23+02:00"
