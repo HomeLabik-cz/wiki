@@ -1,0 +1,7 @@
+name: "Navidrome"
+category: "Media"
+source: "https://github.com/navidrome/navidrome"
+website: "https://www.navidrome.org/"
+icon: "navidrome"
+added: "2026-10-19T07:55:09+02:00"
+description: "Hudební mediální server napsaný v Go s Subsonic API podporou."
