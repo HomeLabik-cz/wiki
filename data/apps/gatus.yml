@@ -1,0 +1,7 @@
+name: "Gatus"
+category: "Monitoring"
+source: "https://github.com/TwiN/gatus"
+website: "https://gatus.io/"
+icon: "gatus"
+added: "2026-10-19T11:18:08+02:00"
+description: "Lehký monitoring služeb s podporou oznámení výpadku."
