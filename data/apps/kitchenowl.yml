@@ -1,0 +1,8 @@
+name: "KitchenOwl"
+category: "Cooking"
+source: "https://github.com/TomBursch/kitchenowl"
+website: "https://kitchenowl.org/"
+docker: "https://hub.docker.com/r/tombursch/kitchenowl"
+icon: "kitchenowl"
+added: "2026-10-22T12:52:04+02:00"
+description: "Aplikace pro vytváření nákupních seznamů, výdajů a recepty."
