@@ -1,0 +1,7 @@
+name: "openGym"
+category: "Fitness"
+source: "https://github.com/DuarteSantos8/openGym"
+website: "https://opengym.ch/"
+icon: "opengym"
+added: "2026-10-29T21:43:43+01:00"
+description: "Aplikace zaměřená na cvičení v posilovně. Obsahuje databázi cviků podle partií, typu a vybavení, plánovač a statistiky."
